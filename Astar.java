@@ -28,6 +28,7 @@ public class Astar {
             this.solution = curr.toString() + this.solution;
             curr = getPrev(curr);
         } while (curr.getI() != 0 && curr.getJ() != 0);
+        System.out.println(this.solution);
     }
 
     private Place getPrev(Place curr){;
@@ -42,11 +43,11 @@ public class Astar {
         LinkedList<Place> morePlaces = generatePlaces(curr);
         for (Place place : morePlaces) {
             if(!place.equals(new Place(11, 11)))
-                if(maze[place.getI()][place.getJ()] != 0)
-                    morePlaces.remove(place);
-                else if(place.getI() < 0 || place.getJ() < 0)
+                if(place.getI() < 0 || place.getJ() < 0)
                     morePlaces.remove(place);
                 else if(place.getI() > 11 || place.getJ() > 11)
+                    morePlaces.remove(place);
+                else if(maze[place.getI()][place.getJ()] != 0)
                     morePlaces.remove(place);
                 else if(visited.contains(place))
                     morePlaces.remove(place);
