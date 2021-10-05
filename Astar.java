@@ -1,7 +1,5 @@
 import java.util.LinkedList;
 
-import javax.lang.model.util.ElementScanner14;
-
 public class Astar {
 
     private String solution;
@@ -19,7 +17,7 @@ public class Astar {
 
     public void solveMaze(){
         Place curr = pending.getFirst();
-        while (curr.getI() != 11 && curr.getJ() != 11){
+        while (!(curr.getI() == 11 && curr.getJ() == 11)){
             curr = pending.getFirst();
             pending.addAll(expandPending(curr));
             pending.sort(new PlaceComparator());
@@ -31,7 +29,7 @@ public class Astar {
             visited.remove(curr);
             this.solution = curr.toString() + this.solution;
             curr = getPrev(curr);
-        } while (curr.getI() != 0 && curr.getJ() != 0);
+        } while (!(curr.getI() == 0 && curr.getJ() == 0));
         System.out.println(this.solution);
     }
 
@@ -60,10 +58,18 @@ public class Astar {
 
     private Place getPrev(Place curr){;
         for (Place place : visited) {
-            if(place.isPrev(curr))
+            if(isPrev(place, curr))
                 return place;
         }
         return null;
+    }
+
+    public boolean isPrev(Place pPrev, Place curr){
+        if((pPrev.getG() == curr.getG() - 1))
+            if((pPrev.getI() - 1 == curr.getI()) ^ (pPrev.getJ() - 1 == curr.getJ()) ^
+               (pPrev.getI() + 1 == curr.getI()) ^ (pPrev.getJ() + 1 == curr.getJ()))
+                return true;
+        return false;
     }
 
     private LinkedList<Place> expandPending(Place curr){
@@ -73,10 +79,18 @@ public class Astar {
             if(!(place.getI() < 0 || place.getJ() < 0) &&
                !(place.getI() > 11 || place.getJ() > 11) &&
                !(maze[place.getI()][place.getJ()] != 0) &&
-               !(visited.contains(place) || pending.contains(place)))
+               !(contains(visited,place) || contains(pending,place)))
                 realPlaces.add(place);
         }
         return realPlaces;
+    }
+
+    private boolean contains(LinkedList<Place> places, Place place){
+        for (Place p : places) {
+            if(p.getI() == place.getI() && p.getJ() == place.getJ())
+                return true;
+        }
+        return false;
     }
 
     private LinkedList<Place> generatePlaces(Place curr){
