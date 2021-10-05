@@ -14,14 +14,6 @@ public class Place implements Comparable<Place> {
         this.f = g + h;
     }
     
-    public Place(int i, int j) {
-        this.i = i;
-        this.j = j;
-        this.g = 22;
-        this.h = 0;
-        this.f = 22;
-    }
-    
     public Place() {
         this.i = 0;
         this.j = 0;
@@ -31,7 +23,7 @@ public class Place implements Comparable<Place> {
     }
 
     public boolean isPrev(Place pPrev){
-        if(pPrev.getF() == this.getF())
+        if((pPrev.getG() == this.getG() - 1))
             if((pPrev.getI() - 1 == this.getI()) ^ (pPrev.getJ() - 1 == this.getJ()) ^
                (pPrev.getI() + 1 == this.getI()) ^ (pPrev.getJ() + 1 == this.getJ()))
                 return true;
